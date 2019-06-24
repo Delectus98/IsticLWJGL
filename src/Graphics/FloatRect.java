@@ -7,6 +7,16 @@ public class FloatRect {
     public float l, t, w, h;
 
     /**
+     * Generates a rectangle with all value set default to 0
+     */
+    public FloatRect() {
+        this.l = 0;
+        this.t = 0;
+        this.w = 0;
+        this.h = 0;
+    }
+
+    /**
      * Generates a rectangle
      * @param l left coordinate
      * @param t top coordinate

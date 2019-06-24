@@ -23,6 +23,61 @@ public class Vector2i implements Comparable<Vector2i> {
         y = (int)v.y;
     }
 
+    // self-operation
+    public Vector2i add(Vector2f vec2) {
+        this.x += vec2.x;
+        this.y += vec2.y;
+        return this;
+    }
+
+    public Vector2i fact(float f) {
+        this.x *= f;
+        this.y *= f;
+        return this;
+    }
+
+    public Vector2i normalize() {
+        double l = this.length();
+        this.x /= l;
+        this.y /= l;
+        return this;
+    }
+
+    public Vector2i negate() {
+        this.x = -this.x;
+        this.y = -this.y;
+        return this;
+    }
+
+    //
+    public Vector2i neg(){
+        return new Vector2i(-this.x, -this.y);
+    }
+
+    public Vector2i mul(int f) {
+        return new Vector2i(this.x * f, this.y * f);
+    }
+
+    public Vector2i sum(Vector2i v2){
+        Vector2i vt = new Vector2i(this.x, this.y);
+        vt.x += v2.x;
+        vt.y += v2.y;
+        return vt;
+    }
+
+    public Vector2f unit() {
+        double l = this.length();
+        return new Vector2f((float)(this.x / l), (float)(this.y / l));
+    }
+
+    public int slength() {
+        return x*x+y*y;
+    }
+
+    public float length() {
+        return (float)Math.sqrt(x*x + y*y);
+    }
+
     @Override
     public Vector2i clone() {
         return new Vector2i(x,y);
@@ -52,6 +107,6 @@ public class Vector2i implements Comparable<Vector2i> {
 
     @Override
     public String toString(){
-        return "(" + x + " ," + y + ")";
+        return "(" + x + ", " + y + ")";
     }
 }
