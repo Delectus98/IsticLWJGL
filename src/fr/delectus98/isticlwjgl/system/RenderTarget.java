@@ -35,8 +35,10 @@ public abstract class RenderTarget extends GlObject {
      * Change current RenderTarget to 'this' and change view to 'this' view
      */
     public final void setActive(){
-        currentTarget.set(this);
-        this.bind(); // on souhaite modifier ce RenderTarget seulement
+        if (currentTarget.get() != this) {
+            currentTarget.set(this);
+            this.bind(); // on souhaite modifier ce RenderTarget seulement
+        }
     }
 
     /**
@@ -69,7 +71,7 @@ public abstract class RenderTarget extends GlObject {
      * Setting a camera obliges the User to update camera settings when the GLFWWindow is resizing.
      * @param cam specified camera
      */
-    public final void setCamera(@NotNull Camera cam){
+    public final void setCamera(Camera cam){
         this.camera = cam;
         if (isActive()) {
             // changer de camera pendant un affichage ne va pas remettre a jour la vue du RenderTarget
@@ -83,7 +85,7 @@ public abstract class RenderTarget extends GlObject {
      * Setting a viewport obliges the User to update viewport settings when the GLFWWindow is resizing.
      * @param viewport specified viewport
      */
-    public final void setViewport(@NotNull Viewport viewport){
+    public final void setViewport(Viewport viewport){
         this.viewport = viewport;
         if (isActive()) {
             // changer de viewport pendant un affichage va remettre a jour la vue du RenderTarget
