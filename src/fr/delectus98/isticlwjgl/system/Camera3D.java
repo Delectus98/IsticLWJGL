@@ -1,6 +1,7 @@
 package fr.delectus98.isticlwjgl.system;
 
 
+import fr.delectus98.isticlwjgl.graphics.Vector2i;
 import fr.delectus98.isticlwjgl.graphics.Vector3f;
 import fr.delectus98.isticlwjgl.opengl.GLM;
 import org.lwjgl.util.vector.Matrix4f;
@@ -15,13 +16,14 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Camera3D extends Camera {
 
-    private Vector3f _center = new Vector3f(0,0,0);
-    private Vector3f _up = new Vector3f(0,-1,0);
-    private Vector3f _eye  = new Vector3f(0,0,1);
-    private float _fov = 90.f;
-    private float _znear = 1;
-    private float _zfar = 1000;
-    private float _aspectRatio = 3.f/4.f;
+    protected Vector3f _center = new Vector3f(0,0,0);
+    protected Vector3f _up = new Vector3f(0,-1,0);
+    protected Vector3f _eye  = new Vector3f(0,0,1);
+    protected float _fov = 90.f;
+    protected float _znear = 1;
+    protected float _zfar = 1000;
+    protected float _aspectRatio = 3.f/4.f;
+    protected Vector2i invertAxis = new Vector2i(1,1);
 
     /**
      * Generates Camera with default settings :
@@ -40,13 +42,13 @@ public class Camera3D extends Camera {
      * @param fov field of view in degree
      * @param znear near depth buffer limit
      * @param zfar far depth buffer limit
-     * @param window for view aspect
+     * @param target for view aspect
      */
-    public Camera3D(float fov, float znear, float zfar, GLFWWindow window) {
+    public Camera3D(float fov, float znear, float zfar, RenderTarget target) {
         this._fov = fov;
         this._znear = znear;
         this._zfar = zfar;
-        this._aspectRatio = (float)window.getDimension().x / (float)window.getDimension().y;
+        this._aspectRatio = (float)target.getDimension().x / (float)target.getDimension().y;
     }
 
     /**
@@ -91,13 +93,24 @@ public class Camera3D extends Camera {
         return new Vector3f(_up);
     }
 
+    /**
+     * Invert camera axis view
+     * @param x_axis enable x inversion
+     * @param y_axis enable y inversion
+     */
+    public void invert(boolean x_axis, boolean y_axis) {
+        invertAxis.x = x_axis ? -1 : 1;
+        invertAxis.y = y_axis ? -1 : 1;
+        updatable = true;
+    }
+
     @Override
     public Matrix4f getViewMatrix() {
         return GLM.lookAt(_center/*.toLwjgl()*/, _eye.sum(_center)/*.toLwjgl()*/,  _up/*.toLwjgl()*/);
     }
     @Override
     public Matrix4f getProjectionMatrix() {
-        return GLM.perspective(/*(float)Math.toRadians(_fov)*/_fov, _aspectRatio, _znear, _zfar);
+        return GLM.perspective(/*(float)Math.toRadians(_fov)*/invertAxis.x * _fov, invertAxis.y * _aspectRatio, _znear, _zfar);
     }
 
     public void setFOV(float fov) {
@@ -126,7 +139,7 @@ public class Camera3D extends Camera {
     }
 
     public void setPosition(Vector3f position) {
-        _center = position;
+        _center = position.clone();
         updatable = true;
     }
 
