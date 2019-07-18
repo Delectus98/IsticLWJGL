@@ -1,12 +1,10 @@
 package fr.delectus98.isticlwjgl.system;
 
 
-import fr.delectus98.isticlwjgl.graphics.Shader;
+import fr.delectus98.isticlwjgl.graphics.ConstShader;
 import fr.delectus98.isticlwjgl.opengl.GLM;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
-
-import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 
 /**
  * A camera decides how fr.delectus98.isticlwjgl.graphics will be draw by transforming their coordinates according to camera settings/properties.
@@ -64,7 +62,7 @@ public abstract class Camera {
      * @param mvp MVP matrix name
      */
     @Deprecated
-    public final void apply(Shader shader, String mvp) {
+    public final void apply(ConstShader shader, String mvp) {
         final int MVP = shader.getUniformLocation(mvp);
         this.setUniformMVP(MVP);
     }
@@ -78,7 +76,7 @@ public abstract class Camera {
      * @param projection projection matrix
      */
     @Deprecated
-    public final void apply(Shader shader, String model, String view, String projection) {
+    public final void apply(ConstShader shader, String model, String view, String projection) {
         this.setUniformMVP(shader, model, view, projection);
     }
 
@@ -90,7 +88,7 @@ public abstract class Camera {
      * @param projection uniform Projection matrix name
      */
     @Deprecated
-    public final void setUniformMVP(Shader shader, String model, String view, String projection) {
+    public final void setUniformMVP(ConstShader shader, String model, String view, String projection) {
         final int M = shader.getUniformLocation(model);
         final int V = shader.getUniformLocation(view);
         final int P = shader.getUniformLocation(projection);
