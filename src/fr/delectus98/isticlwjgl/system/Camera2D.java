@@ -1,6 +1,7 @@
 package fr.delectus98.isticlwjgl.system;
 
 import fr.delectus98.isticlwjgl.graphics.Vector2f;
+import fr.delectus98.isticlwjgl.graphics.Vector2i;
 import fr.delectus98.isticlwjgl.opengl.GLM;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -19,6 +20,7 @@ public class Camera2D extends Camera {
     private float angle = 0;
     private float znear = -1.f;
     private float zfar = 1.f;
+    private Vector2i invertAxis = new Vector2i(1,1);
 
     public Camera2D(Vector2f dimension){
         screenDimension = dimension;
@@ -59,11 +61,22 @@ public class Camera2D extends Camera {
         return angle;
     }
 
+    /**
+     * Invert camera axis view
+     * @param x_axis enable x inversion
+     * @param y_axis enable y inversion
+     */
+    public void invert(boolean x_axis, boolean y_axis) {
+        invertAxis.x = x_axis ? -1 : 1;
+        invertAxis.y = y_axis ? -1 : 1;
+        updatable = true;
+    }
+
     @Override
     public Matrix4f getViewMatrix() {
         return new Matrix4f()
                 .translate(new org.lwjgl.util.vector.Vector2f(center.x, center.y))
-                .scale(new Vector3f(zoom,zoom,1))
+                .scale(new Vector3f(invertAxis.x * zoom, invertAxis.y * zoom,1))
                 .rotate(angle, new Vector3f(0,0,1))
                 .translate(new org.lwjgl.util.vector.Vector2f(-center.x, -center.y));
     }
