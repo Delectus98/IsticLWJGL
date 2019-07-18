@@ -577,6 +577,7 @@ public class GLFWWindow extends RenderTarget {
      * @param position desktop topleft position
      */
     public final void setPosition(Vector2i position){
+        if (!running) return;
         glfwSetWindowPos(this.glId, position.x, position.y);
     }
 
@@ -585,6 +586,7 @@ public class GLFWWindow extends RenderTarget {
      * @param dimension specified dimension
      */
     public final void setDimension(VideoMode dimension){
+        if (!running) return;
         this.width = dimension.width;
         this.height = dimension.height;
         glfwSetWindowSize(this.glId, dimension.width, dimension.height);
@@ -618,10 +620,12 @@ public class GLFWWindow extends RenderTarget {
     }
 
     public final void hide() {
+        if (!running) return;
         glfwHideWindow(this.getGlId());
     }
 
     public final void show() {
+        if (!running) return;
         glfwShowWindow(this.getGlId());
     }
 
@@ -631,6 +635,7 @@ public class GLFWWindow extends RenderTarget {
      */
     @Override
     public final Image capture() {
+        if (!running) return null;
         final int bpp = 4;
 
         if (!this.isActive()) this.setActive();
