@@ -114,7 +114,7 @@ public class VertexArrayObject extends GlObject implements Drawable {
 
 
         // create vertex array object (VAO)
-        super.glId = GL30.glGenVertexArrays(); //TODO context can't share VAO
+        super.glId = GL30.glGenVertexArrays();
         glBindVertexArray((int)super.glId);
 
         for (int i=0 ; i < vboCount ; ++i) {
@@ -131,34 +131,34 @@ public class VertexArrayObject extends GlObject implements Drawable {
 
     /**
      * Updates the GPU memory for a specific VAO.
-     * @param vao specified vao
+     * @param vbo specified vao
      * @param data New memory.
      */
-    public void update(int vao, float[] data) {
+    public void update(int vbo, float[] data) {
         if (super.getGlId() == 0) return;
 
-        if (vao < 0 || vao >= vboArrayId.length || data.length % vboArraySampleSize[vao] != 0) throw new RuntimeException("Out of bounds VAO.");
+        if (vbo < 0 || vbo >= vboArrayId.length || data.length % vboArraySampleSize[vbo] != 0) throw new RuntimeException("Out of bounds VAO.");
 
         // assign vertex VBO to slot 0 of VAO
-        glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[vao]);
+        glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[vbo]);
         glBufferData(GL15.GL_ARRAY_BUFFER, data, usage.usage);
         glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
     /**
      * Updates the GPU memory for a specific VAO using a specific index (and length).
-     * @param vao specified vao
+     * @param vbo specified vao
      * @param data New memory.
      */
-    @Deprecated
-    public void update(int vao, float[] data, int offset) {
+    public void update(int vbo, float[] data, int offset) {
         if (super.getGlId() == 0) return;
 
-        if (vao < 0 || vao >= vboArrayId.length || (offset + data.length) >= this.count) throw new RuntimeException("Out of bounds VAO.");
+        if (vbo < 0 || vbo >= vboArrayId.length || (offset + data.length) >= this.count * vboArraySampleSize[vbo]) throw new RuntimeException("Out of bounds VAO.");
 
         // assign vertex VBO to slot 0 of VAO
-        glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[vao]);
-        glBufferSubData(vao, offset, data);
+        glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[vbo]);
+        final int BYTE_SIZEOF_FLOAT = 4;
+        glBufferSubData(GL15.GL_ARRAY_BUFFER, offset * BYTE_SIZEOF_FLOAT, data);
         glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
