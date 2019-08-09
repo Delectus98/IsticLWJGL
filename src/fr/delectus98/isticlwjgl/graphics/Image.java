@@ -111,7 +111,9 @@ public class Image implements ConstImage {
 
             ByteBuffer buf = convertImage(i);
 
-            buffer = buf.array();
+            buffer = new byte[buf.capacity()];
+
+            buf.get(buffer);
         } finally {
             if (input != null) {
                 input.close();
@@ -223,19 +225,21 @@ public class Image implements ConstImage {
         ImageIO.write(bfImage, format, new File(filename));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Image image = new Image();
 
-        image.create(50,50);
+        image.loadFromFile("bump.png");
+
+        /*image.create(50,50);
 
         for (int i=0 ; i < 50 ; ++i) {
             for (int j=0 ; j < 50 ; j++) {
                 image.setPixel(i,j, new Color(0.f, 1.f, 1.f, (i+j)/(100.f)));
             }
-        }
+        }*/
 
         try {
-            image.saveAs("test.PnG");
+            image.saveAs("test_copy.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
