@@ -20,4 +20,10 @@ public abstract class ConstColor {
 
         return false;
     }
+
+    @Override
+    public String toString()
+    {
+        return "rgba(" + getR() + ", " + getG() + ", " + getB() + ", " + getA() + ")";
+    }
 }
