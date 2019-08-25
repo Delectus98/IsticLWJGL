@@ -9,6 +9,7 @@ import java.awt.color.ColorSpace;
 import java.awt.image.*;
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 /**
  * Image represents a 2D graphic RGBA8 image that can be edit by the CPU.
@@ -138,6 +139,7 @@ public class Image implements ConstImage {
             for(int x = 0; x < image.getWidth(); x++)
             {
                 int pixel = pixels[y * image.getWidth() + x];
+
                 buffer.put((byte) ((pixel >> 16) & 0xFF));     // Red component
                 buffer.put((byte) ((pixel >> 8) & 0xFF));      // Green component
                 buffer.put((byte) (pixel & 0xFF));               // Blue component
@@ -167,7 +169,7 @@ public class Image implements ConstImage {
     public Color getPixel(int x, int y) {
         int offset = x * bpp + y * width * bpp;
 
-        return new Color(buffer[offset]/255.f, buffer[offset+1]/255.f, buffer[offset+2]/255.f, buffer[offset+3]/255.f);
+        return new Color(((buffer[offset]) & 0xFF) / 255.f, ((buffer[offset+1]) & 0xFF) / 255.f, ((buffer[offset+2]) & 0xFF) / 255.f, ((buffer[offset+3]) & 0xFF) / 255.f);
     }
 
     /**
@@ -176,14 +178,14 @@ public class Image implements ConstImage {
      * @param y y-coordinates.
      * @param c openGL color
      */
-    public void setPixel(int x, int y, Color c) {
+    public void setPixel(int x, int y, ConstColor c) {
         int offset = x * bpp + y * width * bpp;
 
         // openGL color colors are in range [0-1] and must be converted to [0-255]
-        buffer[offset  ] = (byte)(c.r*255);
-        buffer[offset+1] = (byte)(c.g*255);
-        buffer[offset+2] = (byte)(c.b*255);
-        buffer[offset+3] = (byte)(c.a*255);
+        buffer[offset  ] = (byte)(c.getR()*255);
+        buffer[offset+1] = (byte)(c.getG()*255);
+        buffer[offset+2] = (byte)(c.getB()*255);
+        buffer[offset+3] = (byte)(c.getA()*255);
     }
 
     /**
@@ -228,7 +230,7 @@ public class Image implements ConstImage {
     public static void main(String[] args) throws IOException {
         Image image = new Image();
 
-        image.loadFromFile("bump.png");
+        image.loadFromFile("character.png");
 
         /*image.create(50,50);
 
@@ -240,6 +242,9 @@ public class Image implements ConstImage {
 
         try {
             image.saveAs("test_copy.png");
+            image.setPixel(0,0, Color.Yellow);
+            System.out.println(image.getPixel(0,0).toString());
+            System.out.println(image.getPixel(1,0).toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
