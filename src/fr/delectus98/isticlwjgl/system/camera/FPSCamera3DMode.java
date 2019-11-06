@@ -24,7 +24,7 @@ public class FPSCamera3DMode implements Camera3DMode {
     @Override
     public void apply(Camera3D camera, Time elapsed) {
         final int pxPerSeconds = 50;
-        final double radPerSeconds = Math.PI/10;
+        final double radPerSeconds = Math.PI;
 
         double seconds = elapsed.asSeconds();
 

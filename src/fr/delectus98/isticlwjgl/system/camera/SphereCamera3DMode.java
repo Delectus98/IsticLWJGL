@@ -1,12 +1,12 @@
 package fr.delectus98.isticlwjgl.system.camera;
 
-//import System.Camera3D;
+/*
+import fr.delectus98.isticlwjgl.graphics.Vector3f;
+import fr.delectus98.isticlwjgl.system.Camera3D;
+import fr.delectus98.isticlwjgl.system.Keyboard;
+import fr.delectus98.isticlwjgl.system.Time;
 
-//import org.lwjgl.input.Keyboard;
-
-//import static System.CameraMode.FPSCamera3DMode.radianToDirection;
-
-/*public class SphereCamera3DMode implements Camera3DMode {
+public class SphereCamera3DMode implements Camera3DMode {
     private float radius;
    // private Vector3f _position = new Vector3f();
     private Vector3f _angles = new Vector3f();
@@ -27,7 +27,7 @@ package fr.delectus98.isticlwjgl.system.camera;
         // movement handling
         Vector3f pos = camera.getCenter();
         Vector3f motion = new Vector3f();
-        /*if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
             motion.add(camera.getOrientation().fact((float)( pxPerSeconds*seconds)));
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -51,7 +51,7 @@ package fr.delectus98.isticlwjgl.system.camera;
         }
 
         // angle handling
-        if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+        if (Keyboard(Keyboard.KEY_UP)) {
             _angles.z += radPerSeconds*seconds;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
