@@ -25,8 +25,8 @@ import javax.imageio.ImageIO;
  * @see fr.delectus98.isticlwjgl.graphics.Image Image (RAM only)
  */
 public class Texture extends GlObject implements ConstTexture {
-    //TODO plus optimisé de faire comme ça ? en gros on va conserver la dernier texture (ou null) activée pour ne pas l'activer a chaque fois qu'elle va être utilisée a la suite
-    private static ThreadLocal<Texture> currentTexture = new ThreadLocal<Texture>();
+    //TODO plus optimisé de faire comme ça ? en gros on va conserver la derniere texture (ou null) activée pour ne pas l'activer a chaque fois qu'elle va être utilisée a la suite
+    private static ThreadLocal<Texture> currentTexture = new ThreadLocal<>();
     private static Map<Integer, Texture> currentTextures = new HashMap<>();
     static {
         currentTexture.set(null);
@@ -42,6 +42,8 @@ public class Texture extends GlObject implements ConstTexture {
         trivial = new Texture(image, GL_NEAREST, GL_REPEAT);
         //throw new RuntimeException("Impossible to load trivial white texture");
     }
+
+    //Internal operation
     public static ConstTexture DefaultTexture(){
         return trivial;
     }
@@ -307,10 +309,20 @@ public class Texture extends GlObject implements ConstTexture {
      */
     @Override
     public void free(){
+        if (glId == 0)
+            return ;
+        if (currentTexture.get() == this) {
+            currentTexture.set(null);
+        }
         glBindTexture(GL_TEXTURE_2D, 0);
         glDeleteTextures((int)glId);
         glId = 0;
     }
+
+    /*public void finalize() throws Throwable {
+        this.free();
+        System.out.println("finalize texture");
+    }*/
 
     /**
      * Tests if two textures are same by comparing their 'glId'. Both texture must be into DRAM (it means that their 'glId' must be different to 0).

@@ -1,33 +1,35 @@
 package fr.delectus98.isticlwjgl.opengl;
 
+import fr.delectus98.isticlwjgl.graphics.VertexArrayObject;
 import org.lwjgl.opengl.GL;
 
-public class Version {
-    private Version(){}
+public enum Version {
+    GL11,
+    GL12,
+    GL13,
+    GL14,
+    GL15,
+    GL20,
+    GL21,
+    GL30,
+    GL31,
+    GL32,
+    GL33,
+    GL40,
+    GL41,
+    GL42,
+    GL43,
+    GL44,
+    GL45,
+    GL46;
 
-    public enum Internal {
-        GL11,
-        GL12,
-        GL13,
-        GL14,
-        GL15,
-        GL20,
-        GL21,
-        GL30,
-        GL31,
-        GL32,
-        GL33,
-        GL40,
-        GL41,
-        GL42,
-        GL43,
-        GL44,
-        GL45,
-        GL46
-    }
-
-    public static boolean isAvailable(Internal version) {
-        switch (version) {
+    /**
+     * Before All: Must be called only after a context is created as GLFWWindow.
+     * Checks if this version of openGL is supported on the system.
+     * @return the availability of the this version.
+     */
+    public boolean isAvailable() {
+        switch (this) {
             case GL11: return GL.getCapabilities().OpenGL11;
             case GL12: return GL.getCapabilities().OpenGL12;
             case GL13: return GL.getCapabilities().OpenGL13;
@@ -47,6 +49,14 @@ public class Version {
             case GL45: return GL.getCapabilities().OpenGL45;
             case GL46: return GL.getCapabilities().OpenGL46;
             default: return false;
+        }
+    }
+
+    public static boolean isAvailable(Object o) {
+        if (VertexArrayObject.class.isInstance(o)) {
+            return GL33.isAvailable();
+        } else {
+            return true;
         }
     }
 }

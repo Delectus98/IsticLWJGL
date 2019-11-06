@@ -1,13 +1,16 @@
 package fr.delectus98.isticlwjgl.example;
 
+import fr.delectus98.isticlwjgl.graphics.model.OBJFormat;
 import fr.delectus98.isticlwjgl.system.*;
 
 import fr.delectus98.isticlwjgl.graphics.*;
 import fr.delectus98.isticlwjgl.graphics.Color;
 import fr.delectus98.isticlwjgl.system.io.AutoKeyboardLayout;
+import org.lwjgl.opengl.GL20;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
 
@@ -26,13 +29,25 @@ public class RenderWindow {
         //RenderTexture renderTexture;
         //RenderTexture renderTexture2;
 
+
+
         Texture texture;
         Texture texture2;
         Texture texture3;
         Texture transp;
         FontFamily font;
+        Shader overlay;
+
+        OBJFormat format;
 
         try {
+            format = new OBJFormat("res/deer.obj");
+            format.getBufferNames().forEach(System.out::println);
+            System.out.println(format.getObjectName());
+            System.out.println(format.getSampleSize("v"));
+            format.getBufferNames().forEach(n -> System.out.print(n + "["+ format.getSampleSize(n)+ "]:"));
+            System.out.println();
+
             //renderTexture = new RenderTexture(200,200);
             //renderTexture2 = new RenderTexture(200,200);
 
@@ -43,6 +58,7 @@ public class RenderWindow {
             transp = new Texture("character.png");
 
             font = new FontFamily("default.ttf", 30);
+            overlay = new Shader("asset/overlay.vert", "asset/overlay.frag");
             //font = new FontFamily("asmelina.ttf", 24);
             //font = new FontFamily("arial.ttf", 24);
             //font = new FontFamily("mono.ttf", 24);
@@ -52,11 +68,19 @@ public class RenderWindow {
             return ;
         }
 
+        Sprite font_panel = new Sprite(font.getTexture());
+
+        int overlayLocation = overlay.getUniformLocation("overlay");
+        overlay.bind();
+
+        GL20.glUniform4f(overlayLocation, 1, 0, 0, 1);
+
         Text text = new Text(font, "Phrase Italique!", Text.ITALIC);
         Text text2 = new Text(font, "Phrase Normale!", Text.REGULAR);
         Text text3 = new Text(font, "Phrase Grasse!", Text.BOLD);
         Text fpsText = new Text(font, "0", Text.BOLD);
         fpsText.setFillColor(Color.Blue);
+        fpsText.setOrigin(-75,-10);
 
         text.setFillColor(Color.Black);
         text2.setFillColor(new Color(1, 0.59f, 0.2f));
@@ -66,19 +90,16 @@ public class RenderWindow {
         textShape.setFillColor(Color.Red);
 
         Sprite transptransp = new Sprite(transp);
-        transptransp.setFillColor(new Color(1,1,1,0.5f));
+        transptransp.setFillColor(new Color(1,1,1,1.f));
 
 
         RectangleShape shape = new RectangleShape(10,10, 10,10);
         shape.setOrigin(5,5);
-        shape.setFillColor(Color.Red);
 
         RectangleShape background = new RectangleShape(200,200);
-        background.setFillColor(Color.Blue);
 
         RectangleShape fullBackground = new RectangleShape(500,500);
         fullBackground.move(-300,-300);
-        fullBackground.setFillColor(Color.Red);
 
 
         Sprite sprite = new Sprite(texture);
@@ -96,6 +117,7 @@ public class RenderWindow {
         Keyboard keyboard = new Keyboard(window);
 
         Camera2D camera = new Camera2D(window);
+        //camera.setZoom(0.5f);
         camera.setZfar(10.f);
         camera.setZnear(-10.f);
         window.setCamera(camera);
@@ -129,13 +151,15 @@ public class RenderWindow {
 
         Viewport viewport2 = new Viewport(new FloatRect(400,50, 900,400));
 
-
         Time elapsedSinceBeginning = Time.seconds(0);
         while (window.isOpen()) {
             Time elapsed = clk.restart();
             elapsedSinceBeginning.add(elapsed);
+            fpsText.setRotation((float)elapsedSinceBeginning.asSeconds());
+            //fpsText.setRotation((float)0);
             //System.out.println(1.0/elapsed.asSeconds());
             fpsText.setString("fps:"+(int)(1.0/elapsed.asSeconds()));
+
             //out.println("abs:" + mouse.getAbsolutePosition().x + ":" + mouse.getAbsolutePosition().y);
             //out.println("rel:" + mouse.getRelativePosition().x + ":" + mouse.getRelativePosition().y);
 
@@ -145,8 +169,12 @@ public class RenderWindow {
 
                     window.close();
                     System.exit(0);
+                } else if (event.type == Event.Type.MOUSEDROP) {
+                    Arrays.asList(event.drop).forEach(s -> System.out.println(s));
                 }
             }
+
+
 
 
             Vector2f mousePos = mouse.getRelativePositionUsingCamera2D(window.getViewport(), camera);
@@ -159,12 +187,16 @@ public class RenderWindow {
             shape.move((float)elapsed.asSeconds()*100, (float)elapsed.asSeconds()*100);
             fullBackground.move((float)elapsed.asSeconds()*100, (float)elapsed.asSeconds()*100);
             transptransp.move((float)elapsed.asSeconds()*100, (float)elapsed.asSeconds()*100);
-
-
-
-
+            font_panel.move((float)elapsed.asSeconds()*100, (float)elapsed.asSeconds()*100);
             camera.setDimension(window.getViewport().getDimension());
             camera.setCenter(shape.getPosition());
+
+            overlay.bind();
+            long color = (long) (elapsedSinceBeginning.asMilliseconds());
+            GL20.glUniform4f(overlayLocation, color % 256 / 255.f, (color+85) % 256 / 255.f, (color + 85*2) % 256 / 255.f, 1);
+
+
+
             if (keyboard.isKeyPressed(GLFW_KEY_P)) {
                 /*try {
                     renderTexture.capture().saveAs("target.jpg");
@@ -182,11 +214,11 @@ public class RenderWindow {
             //texturedShader.bind();
             //window.getCamera().setUniformMVP(0);
             for (int i = 0; i < array.size() ; ++i) {
-                window.draw(array.get(i));
+                window.draw(array.get(i), overlay);
             }
             window.draw(fullBackground);
 
-            window.draw(shape);
+            window.draw(shape, overlay);
 
 
             /*window.draw(screen);
@@ -218,7 +250,8 @@ public class RenderWindow {
             window.draw(screen);
             window.draw(screen2);
             window.draw(shape);*/
-            window.draw(transptransp);
+            window.draw(transptransp, overlay);
+            window.draw(font_panel, overlay);
 
             window.display();
         }

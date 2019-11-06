@@ -14,12 +14,8 @@ public final class Viewport {
     private FloatRect rect;
     private boolean updatable = true;
 
-    ////EXPERIMENTAL (permet a un RenderTarget de savoir si son viewport a changé d'état)
-    //TODO Renommer isUpdatable pour mieux convenir au sens particulier de a été mis a jour par un RenderTarget
+    ////permet a un RenderTarget de savoir si son viewport a changé d'état
     public final boolean hasSinceBeenUpdated() {
-        /*boolean tmp = updatable;
-        updatable = false;
-        return tmp;*/
         return updatable;
     }
 

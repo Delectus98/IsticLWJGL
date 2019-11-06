@@ -12,11 +12,12 @@ import fr.delectus98.isticlwjgl.system.GlObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
+import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  * Interface that handle VBO structure and CPU to GPU stream
  */
-public class VertexArrayObject extends GlObject implements Drawable {
+public class VertexArrayObject extends GlObject {
     public enum Mode {
         TRIANGLES(GL_TRIANGLES, 3),
         TRIANGLES_FAN(GL_TRIANGLE_FAN, 3),
@@ -62,35 +63,32 @@ public class VertexArrayObject extends GlObject implements Drawable {
      * Creates a Vertex Buffer Object with a specific Usage.
      * @param verticesCount vertices count.
      * @param vboCount Number of VAO. (positions, colors, texture coords)
-     * @param vboSampleSize For each VAO each vertices requires how many floats per sample. (0 < vaoSampleSize.length <= vaoCount)
+     * @param vboSamplesSize For each VAO each vertices requires how many floats per sample. (0 < vboSampleSize.length <= vboCount)
      * @param mode draw mode.
      * @param usage usage specified usage.
      */
-    public VertexArrayObject(int verticesCount, int vboCount, int[] vboSampleSize, Mode mode, Usage usage) {
+    public VertexArrayObject(int verticesCount, int vboCount, int[] vboSamplesSize, Mode mode, Usage usage) {
         this.usage = usage;
-        this.create(verticesCount, vboCount, vboSampleSize, mode);
+        this.create(verticesCount, vboCount, vboSamplesSize, mode);
     }
 
 
-    public int getVertices() {
-        return count;
-    }
 
     /**
      * Creates a VBO.
-     * If was already created it frees it before creating it a new time.
+     * If was already created before it will automatically free VBOs before creating it once again.
      * @param verticesCount number of vertices
-     * @param vboCount number of vao.For fr.delectus98.isticlwjgl.example: [count=2](positions = 3, colors = 4) ou [count=3](positions = 3, colors = 4, texCoords = 2)
-     * @param vboSampleSize each vao has it's own number of float values per sample
+     * @param vboCount number of vbo. For example: [count=2](positions = 3, colors = 4) ou [count=3](positions = 3, colors = 4, texCoords = 2)
+     * @param vboSamplesSize each vbo has it's own number of float values per sample
      * @param mode primitive type
      */
-    public void create(int verticesCount, int vboCount, int[] vboSampleSize, Mode mode) {
+    public void create(int verticesCount, int vboCount, int[] vboSamplesSize, Mode mode) throws InvalidStateException {
         this.free();
 
         //each draw mode needs a specified amount of vertices data
         this.drawMode = mode;
         if (verticesCount <= 0 || (verticesCount % mode.modulus != 0)) {
-            throw new RuntimeException("Selected mode requires :'" + mode.modulus + "' vertices per geometric object.");
+            throw new InvalidStateException("Selected mode requires :'" + mode.modulus + "' vertices per geometric object.");
         }
 
 
@@ -104,9 +102,9 @@ public class VertexArrayObject extends GlObject implements Drawable {
         for (int i=0 ; i < vboCount ; ++i) {
             // create vertex buffer object (VBO) for vao[i] kind (positions, colors, texCoods, ...)
             this.vboArrayId[i] = GL15.glGenBuffers();
-            this.vboArraySampleSize[i] = vboSampleSize[i];
+            this.vboArraySampleSize[i] = vboSamplesSize[i];
             glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[i]);
-            glBufferData(GL15.GL_ARRAY_BUFFER, vboSampleSize[i]*verticesCount, usage.usage);
+            glBufferData(GL15.GL_ARRAY_BUFFER, vboSamplesSize[i]*verticesCount, usage.usage);
         }
         // unbind VBO
         glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
@@ -122,16 +120,33 @@ public class VertexArrayObject extends GlObject implements Drawable {
 
             // assign vertex VBO to slot 'i' of VAO
             glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[i]);
-            glVertexAttribPointer(i, vboSampleSize[i], GL11.GL_FLOAT, false, 0, 0);
+            glVertexAttribPointer(i, vboSamplesSize[i], GL11.GL_FLOAT, false, 0, 0);
         }
         // unbind VBO
         glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
     }
 
+    public void setDrawMode(Mode mode) {
+        if (count <= 0 || (count % mode.modulus != 0)) {
+            throw new InvalidStateException("Selected mode requires :'" + mode.modulus + "' vertices per geometric object.");
+        }
+        this.drawMode = mode;
+    }
+
+    public int getVertexCount() {
+        return count;
+    }
+
+    public Mode getDrawMode() {
+        return drawMode;
+    }
+
+    public Usage getUsage() { return usage;}
+
     /**
      * Updates the GPU memory for a specific VAO.
-     * @param vbo specified vao
+     * @param vbo specified vbo
      * @param data New memory.
      */
     public void update(int vbo, float[] data) {
@@ -147,7 +162,7 @@ public class VertexArrayObject extends GlObject implements Drawable {
 
     /**
      * Updates the GPU memory for a specific VAO using a specific index (and length).
-     * @param vbo specified vao
+     * @param vbo specified vbo
      * @param data New memory.
      */
     public void update(int vbo, float[] data, int offset) {
@@ -182,11 +197,10 @@ public class VertexArrayObject extends GlObject implements Drawable {
     /**
      * Displays VBO.
      */
-    @Override
-    public void draw() {
+    public void draw(ConstShader shader) {
         if (this.glId == 0) return ;
 
-        //shader.bind();
+        shader.bind();
 
         // bind vertex and color data
         glBindVertexArray((int)super.glId);
@@ -195,7 +209,30 @@ public class VertexArrayObject extends GlObject implements Drawable {
         GL11.glDrawArrays(drawMode.mode, 0, count);
 
         glBindVertexArray(0);
+    }
 
-        //Shader.unbind();
+    /**
+     * Displays an interval of vertices of the VAO.
+     * @param first (in order) vertex to be drawn
+     * @param last (in order) vertex to be drawn
+     */
+    public void draw(ConstShader shader, int first, int last) throws InvalidStateException {
+        if (this.glId == 0) return ;
+
+        int count = last - first;
+
+        if (count <= 0 || (count % drawMode.modulus != 0)) {
+            throw new InvalidStateException("Selected mode requires :'" + drawMode.modulus + "' vertices per geometric object.");
+        }
+
+        shader.bind();
+
+        // bind vertex and color data
+        glBindVertexArray((int)super.glId);
+
+        // draw VAO
+        GL11.glDrawArrays(drawMode.mode, first, count);
+
+        glBindVertexArray(0);
     }
 }

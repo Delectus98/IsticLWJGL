@@ -18,3 +18,10 @@
 *.zip
 *.tar.gz
 *.rar
+
+.png
+.ttf
+.jpg
+.bmp
+.frag
+.vert

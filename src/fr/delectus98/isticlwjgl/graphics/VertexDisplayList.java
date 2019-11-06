@@ -6,7 +6,7 @@ import static org.lwjgl.opengl.GL11.glEnd;
 /**
  * Old OpenGL means of drawing interface.
  */
-public class VertexDisplayList implements Drawable {
+public class VertexDisplayList {
     public enum Mode {
         TRIANGLES(GL_TRIANGLES, 3),
         TRIANGLES_FAN(GL_TRIANGLE_FAN, 3),

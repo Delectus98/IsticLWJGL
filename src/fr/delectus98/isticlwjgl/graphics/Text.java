@@ -1,6 +1,8 @@
 package fr.delectus98.isticlwjgl.graphics;
 
 
+import fr.delectus98.isticlwjgl.opengl.GLM;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -14,29 +16,35 @@ public class Text extends Shape {
     private float px;
     private int style;
     private String string = "";
-    private FontFamily font = null;
+    private ConstFontFamily font = null;
 
-    public Text(FontFamily font, String str) {
+    public Text(ConstFontFamily font, String str) {
         this(font, str, REGULAR);
     }
 
-    public Text(FontFamily font, String str, int styles) {
+    public Text(ConstFontFamily font, String str, int styles) {
         this.px = font.getFontImageHeight();
 
         this.font = font;
         this.string = str;
         this.style = styles;
-
         //buffer = new VertexBuffer(str.length() * 3 * 2, 3 , new int[]{3,4,2}, VertexBuffer.Mode.TRIANGLES, VertexBuffer.Usage.STREAM );
-
         update();
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
     }
 
     public void setString(String content) {
         this.string = content;
-
         //buffer.create(content.length() * 3 * 2, 3, new int[]{3, 4, 2}, VertexBuffer.Mode.TRIANGLES);
+        update();
+    }
 
+    public void setFont(ConstFontFamily font) {
+        this.px = font.getFontImageHeight();
+        this.font = font;
         update();
     }
 
@@ -78,14 +86,25 @@ public class Text extends Shape {
         height = charHeight * super.sy + boldOffsetY;
     }
 
+    public int getStyle(){
+        return style;
+    }
+
+    public ConstFontFamily getFont(){
+        return font;
+    }
+
+    @Override
+    public FloatRect getBounds() {
+        return new FloatRect(x - ox, y - oy, width, height);
+    }
+
     public String getString() {
         return string;
     }
 
     @Override
     public void draw() {
-        //Shader.unbind();
-
         font.getTexture().bind();
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_QUADS);
@@ -99,6 +118,8 @@ public class Text extends Shape {
 
         glColor4f(color.r, color.g, color.b, color.a);
 
+        final Vector2f origin = new Vector2f(x, y);
+
         for (char c : string.toCharArray()) {
             float width = font.getCharWidth(c);
 
@@ -107,36 +128,40 @@ public class Text extends Shape {
             float cx = 1f / font.getFontImageWidth() * font.getCharX(c);
             float cy = 1f / font.getFontImageHeight() * font.getCharY(c);
 
+            //Points
+            Vector2f p1 = GLM.rotate(origin, new Vector2f(xTmp + ox + italicOffset, y + oy),  super.cos, super.sin);
+            Vector2f p2 = GLM.rotate(origin, new Vector2f(xTmp + ox + width * super.sx + italicOffset + boldOffsetX, y + oy), super.cos, super.sin);
+            Vector2f p3 = GLM.rotate(origin, new Vector2f(xTmp + ox + width * super.sx + boldOffsetX, y + oy + height * super.sy + boldOffsetY), super.cos, super.sin);
+            Vector2f p4 = GLM.rotate(origin, new Vector2f(xTmp + ox, y + oy + height * super.sy + boldOffsetY), super.cos, super.sin);
 
             glTexCoord2f(cx, cy);
+            glVertex3f(p1.x, p1.y, 0);
+
+            glTexCoord2f(cx + cw, cy);
+            glVertex3f(p2.x, p2.y, 0);
+
+            glTexCoord2f(cx + cw, cy + ch);
+            glVertex3f(p3.x, p3.y, 0);
+
+            glTexCoord2f(cx, cy + ch);
+            glVertex3f(p4.x, p4.y, 0);
+
+            /*glTexCoord2f(cx, cy);
             glVertex3f(xTmp + ox + italicOffset, y + oy, 0);
 
             glTexCoord2f(cx + cw, cy);
-            glVertex3f(xTmp + ox + width * super.sx  + italicOffset + boldOffsetX, y + oy, 0);
+            glVertex3f(xTmp + ox + width * super.sx + italicOffset + boldOffsetX, y + oy, 0);
 
             glTexCoord2f(cx + cw, cy + ch);
-            glVertex3f(xTmp + ox + width * super.sx  + boldOffsetX, y + oy + height * super.sy + boldOffsetY, 0);
+            glVertex3f(xTmp + ox + width * super.sx + boldOffsetX, y + oy + height * super.sy + boldOffsetY, 0);
 
             glTexCoord2f(cx, cy + ch);
-            glVertex3f(xTmp + ox , y + oy + height * super.sy  + boldOffsetY, 0);
+            glVertex3f(xTmp + ox, y + oy + height * super.sy + boldOffsetY, 0);*/
 
             xTmp += width * super.sx + boldOffsetX;
         }
+
         glEnd();
 
     }
-
-    public int getStyle(){
-        return style;
-    }
-
-    public FontFamily getFont(){
-        return font;
-    }
-
-    @Override
-    public FloatRect getBounds() {
-        return new FloatRect(x - ox, y - oy, width, height);
-    }
-
 }

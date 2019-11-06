@@ -235,6 +235,7 @@ public class Shader extends GlObject implements ConstShader {
         glLinkProgram((int)glId);
         glDeleteShader((int)glId);
         glUseProgram(0);
+        currentShader.set(null);
         glId = 0;
     }
 
@@ -252,6 +253,60 @@ public class Shader extends GlObject implements ConstShader {
             uniforms.put(name, location);
             return location;
         }
+    }
+
+    public void setUniform(int id, int v0)
+    {
+        this.bind();
+        GL20.glUniform1i(id, v0);
+    }
+
+    public void setUniform(int id, int v0, int v1)
+    {
+        this.bind();
+        GL20.glUniform2i(id, v0, v1);
+    }
+
+    public void setUniform(int id, int v0, int v1, int v2)
+    {
+        this.bind();
+        GL20.glUniform3i(id, v0, v1, v2);
+    }
+
+    public void setUniform(int id, float v0)
+    {
+        this.bind();
+        GL20.glUniform1f(id, v0);
+    }
+
+    public void setUniform(int id, float v0, float v1)
+    {
+        this.bind();
+        GL20.glUniform2f(id, v0, v1);
+    }
+
+    public void setUniform(int id, float v0, float v1, float v2)
+    {
+        this.bind();
+        GL20.glUniform3f(id, v0, v1, v2);
+    }
+
+    public void setUniformMatrix2(int id, float[] values)
+    {
+        this.bind();
+        GL20.glUniformMatrix2fv(id, false, values);
+    }
+
+    public void setUniformMatrix3(int id, float[] values)
+    {
+        this.bind();
+        GL20.glUniformMatrix3fv(id, false, values);
+    }
+
+    public void setUniformMatrix4(int id, float[] values)
+    {
+        this.bind();
+        GL20.glUniformMatrix4fv(id, false, values);
     }
 
 }

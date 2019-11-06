@@ -1,7 +1,16 @@
 package fr.delectus98.isticlwjgl.graphics;
 
-/**
- * Created by Maxime on 30/10/2019.
- */
-public class ConstFontFamily {
+
+import java.util.Set;
+
+public interface ConstFontFamily {
+    Set<Integer> getCharset();
+    float getFontImageWidth();
+    float getFontImageHeight();
+    float getCharX(char c);
+    float getCharY(char c);
+    float getCharWidth(int c);
+    float getCharHeight();
+    boolean isUnicodeEnable(int unicode);
+    ConstTexture getTexture();
 }

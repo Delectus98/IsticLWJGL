@@ -5,8 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import fr.delectus98.isticlwjgl.system.GlObject;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,37 +18,40 @@ import static org.lwjgl.opengl.GL11.*;
  * https://www.oreilly.com/library/view/learning-java-4th/9781449372477/ch20s06.html
  * @author TheBoneJarmer
  */
-@Deprecated
-public class FontFamily extends GlObject {
+public class FontFamily extends GlObject implements ConstFontFamily {
 
     //Constants
-    private final Map<Integer,String> CHARS = new HashMap<Integer,String>() {{
+    private static final Map<Integer,String> CHARS = new HashMap<Integer,String>() {{
         put(0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         put(1, "abcdefghijklmnopqrstuvwxyz");
         put(2, "0123456789");
-        put(3, "ÄÖÜäöüßéèçàùËë");
-        put(4, " $+-*/=%\"€'@&_(),.;:?!\\|<>[]§`^~µ%'{}¤£");
+        put(3, "ÄÖÜäöüßéèçàùËë§`^~µ%¤£€@");
+        put(4, " $+-*/=%\"'&_(),.;:?!\\|<>[]{}");
     }};
 
     //Variables
+    private final Map<Integer,String> charset;//layout
     private java.awt.Font font;
     private FontMetrics fontMetrics;
     private Texture texture = null;
-    private int fontTextureId;
+
 
     //Getters
+    public Set<Integer> getCharset() {
+        return new HashSet<>(charset.values().stream().map(s -> s.chars().boxed().collect(Collectors.toList())).reduce((s0, s1) -> {s1.addAll(s0); return s1;}).orElse(new ArrayList<>()));
+    }
     public float getFontImageWidth() {
-        return (float) CHARS.values().stream().mapToDouble(e -> fontMetrics.getStringBounds(e, null).getWidth()).max().getAsDouble();
+        return (float) charset.values().stream().mapToDouble(e -> fontMetrics.getStringBounds(e, null).getWidth()).max().getAsDouble();
     }
     public float getFontImageHeight() {
-        return (float) CHARS.keySet().size() * (this.getCharHeight());
+        return (float) charset.keySet().size() * (this.getCharHeight());
     }
     public float getCharX(char c) {
-        String originStr = CHARS.values().stream().filter(e -> e.contains("" + c)).findFirst().orElse("" + c);
+        String originStr = charset.values().stream().filter(e -> e.contains("" + c)).findFirst().orElse("" + c);
         return (float) fontMetrics.getStringBounds(originStr.substring(0, originStr.indexOf(c)), null).getWidth();
     }
     public float getCharY(char c) {
-        float lineId = (float) CHARS.keySet().stream().filter(i -> CHARS.get(i).contains("" + c)).findFirst().orElse(0);
+        float lineId = (float) charset.keySet().stream().filter(i -> charset.get(i).contains("" + c)).findFirst().orElse(0);
         return this.getCharHeight() * lineId;
     }
     public float getCharWidth(int c) {
@@ -54,43 +59,6 @@ public class FontFamily extends GlObject {
     }
     public float getCharHeight() {
         return (float) (fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent());
-    }
-
-    //Constructors
-    public FontFamily(String path, float size) throws IOException {
-        try {
-            this.font = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(size);
-        } catch (FontFormatException e) {
-            throw new IOException("Font must be True Type Font (*.ttf).");
-        }
-
-        BufferedImage bufferedImage;
-
-        //Generate buffered image
-        GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-        Graphics2D graphics = gc.createCompatibleImage(1, 1, Transparency.TRANSLUCENT).createGraphics();
-        graphics.setFont(font);
-
-        fontMetrics = graphics.getFontMetrics();
-        bufferedImage = graphics.getDeviceConfiguration().createCompatibleImage((int) getFontImageWidth(),(int) getFontImageHeight(),Transparency.TRANSLUCENT);
-
-        //Generate texture
-        fontTextureId = glGenTextures();
-
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, fontTextureId);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,(int) getFontImageWidth(),(int) getFontImageHeight(),0, GL_RGBA, GL_UNSIGNED_BYTE, asByteBuffer(bufferedImage));
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        texture = new Texture(fontTextureId, (int) getFontImageWidth(),(int) getFontImageHeight());
-
-        this.glId = fontTextureId;
-    }
-
-    public boolean isUnicodeEnable(int unicode){
-        return font.canDisplay(unicode);
     }
 
     //Conversions
@@ -105,7 +73,7 @@ public class FontFamily extends GlObject {
 
         // draw every CHAR by line...
         imageGraphics.setColor(java.awt.Color.WHITE);
-        CHARS.keySet().forEach(i -> imageGraphics.drawString(CHARS.get(i), 0, fontMetrics.getMaxAscent() + (this.getCharHeight() * i)));
+        charset.keySet().forEach(i -> imageGraphics.drawString(charset.get(i), 0, fontMetrics.getMaxAscent() + (this.getCharHeight() * i)));
 
         //Generate texture data
         int[] pixels = new int[bufferedImage.getWidth() * bufferedImage.getHeight()];
@@ -125,6 +93,49 @@ public class FontFamily extends GlObject {
         byteBuffer.flip();
 
         return byteBuffer;
+    }
+
+    //Constructors
+    public FontFamily(String path, float size) throws IOException {
+        this(CHARS, path, size);
+    }
+
+    public FontFamily(Map<Integer,String> charset, String path, float size) throws IOException {
+        this.charset = charset;
+
+        try {
+            this.font = Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(size);
+        } catch (FontFormatException e) {
+            throw new IOException("Font must be True Type Font (*.ttf).");
+        }
+
+        BufferedImage bufferedImage;
+
+        //Generate buffered image
+        GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        Graphics2D graphics = gc.createCompatibleImage(1, 1, Transparency.TRANSLUCENT).createGraphics();
+        graphics.setFont(font);
+
+        fontMetrics = graphics.getFontMetrics();
+        bufferedImage = graphics.getDeviceConfiguration().createCompatibleImage((int) getFontImageWidth(),(int) getFontImageHeight(),Transparency.TRANSLUCENT);
+
+        //Generate texture
+        int fontTextureId = glGenTextures();
+
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, fontTextureId);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,(int) getFontImageWidth(),(int) getFontImageHeight(),0, GL_RGBA, GL_UNSIGNED_BYTE, asByteBuffer(bufferedImage));
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        texture = new Texture(fontTextureId, (int) getFontImageWidth(),(int) getFontImageHeight());
+
+        this.glId = fontTextureId;
+    }
+
+    public boolean isUnicodeEnable(int unicode){
+        return font.canDisplay(unicode);
     }
 
     public ConstTexture getTexture() {

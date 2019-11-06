@@ -7,15 +7,9 @@ import com.sun.istack.internal.NotNull;
 /**
  * RenderTarget is an abstract class specifying that it drawn OpenGL fr.delectus98.isticlwjgl.graphics.
  */
-//TODO RenderTargets must own their own view (Camera) and viewport (Viewport).
 public abstract class RenderTarget extends GlObject {
     //Multiple RenderTargets
     private static ThreadLocal<RenderTarget> currentTarget = new ThreadLocal<RenderTarget>();
-
-    private static Shader defaultShader = null;
-    private static final String vertex = "";
-    private static final String fragment = "";
-
 
     //load default shader only once
     private static boolean first = true;

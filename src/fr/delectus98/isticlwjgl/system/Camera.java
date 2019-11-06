@@ -38,7 +38,7 @@ public abstract class Camera {
     }
 
     /**
-     * Sets up MVP matrices to a RenderTarget for Display list
+     * Sets up MVP matrices to a RenderTarget for Display list mode.
      */
     public abstract void apply() ;
 
@@ -52,8 +52,21 @@ public abstract class Camera {
             return;
         }
 
-        //GL20.glUniformMatrix4fv(mvpUniform, false, GLM.toFloatArray((Matrix4f.mul(getProjectionMatrix(), Matrix4f.mul(getViewMatrix(), getModelMatrix(), null), null))));
         GL20.glUniformMatrix4fv(mvpUniform, false, GLM.toFloatArray((Matrix4f.mul(getProjectionMatrix(), getViewMatrix(), null))));
+    }
+
+    /**
+     * Sets up MVP matrix using GLSL matrix uniform location
+     * @param mvpUniform uniform MVP matrix location
+     * @param model model matrix to build MVP matrix
+     */
+    public final void setUniformMVP(int mvpUniform, Matrix4f model) {
+        if (mvpUniform < 0) {
+            System.out.println("MVP Uniform matrix do not exist in the shader.");
+            return;
+        }
+
+        GL20.glUniformMatrix4fv(mvpUniform, false, GLM.toFloatArray((Matrix4f.mul(getProjectionMatrix(), Matrix4f.mul(getViewMatrix(), model, null), null))));
     }
 
     /**
