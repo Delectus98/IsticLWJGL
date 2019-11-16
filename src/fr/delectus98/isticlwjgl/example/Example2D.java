@@ -8,6 +8,7 @@ import java.io.IOException;
 public final class Example2D {
     public static void main(String[] args) throws IOException {
         GLFWWindow window = new GLFWWindow(new VideoMode(500, 500), "Use mouse left button to clear the screen!", WindowStyle.DEFAULT, CallbackMode.DEFAULT);
+        window.setFrameRateLimit(60);
         RectangleShape shape = new RectangleShape(10, 10, 10, 10);
         shape.setFillColor(Color.Red);
 

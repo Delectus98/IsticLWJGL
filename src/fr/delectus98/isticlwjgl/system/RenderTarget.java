@@ -2,7 +2,6 @@ package fr.delectus98.isticlwjgl.system;
 
 
 import fr.delectus98.isticlwjgl.graphics.*;
-import com.sun.istack.internal.NotNull;
 
 /**
  * RenderTarget is an abstract class specifying that it drawn OpenGL fr.delectus98.isticlwjgl.graphics.

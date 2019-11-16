@@ -13,7 +13,7 @@ public class ConwayGame {
         GLFWWindow window = new GLFWWindow(new VideoMode(w, h), "Mandelbrot Set",  WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
         window.setFrameRateLimit(10);
 
-        Shader conway = new Shader("res/conway.vert", "res/conway.frag");
+        Shader conway = new Shader("res/conway/conway.vert", "res/conway/conway.frag");
 
         Keyboard k = new Keyboard(window);
 

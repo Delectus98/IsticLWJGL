@@ -139,8 +139,10 @@ public enum AutoKeyboardLayout implements KeyboardLayout {
      * Creates a default Keyboard Layout using OS default layout only once
      */
     private static void settle(){
-        if (locale == null) {
-            locale = InputContext.getInstance().getLocale();
+        Locale current = InputContext.getInstance().getLocale();
+
+        if (locale == null || locale != current) {
+            locale = current;
 
             Arrays.stream(AutoKeyboardLayout.values())
                     .forEach(key ->

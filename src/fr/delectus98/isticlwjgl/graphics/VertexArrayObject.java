@@ -12,7 +12,6 @@ import fr.delectus98.isticlwjgl.system.GlObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
-import sun.plugin.dom.exception.InvalidStateException;
 
 /**
  * Interface that handle VBO structure and CPU to GPU stream
@@ -82,13 +81,13 @@ public class VertexArrayObject extends GlObject {
      * @param vboSamplesSize each vbo has it's own number of float values per sample
      * @param mode primitive type
      */
-    public void create(int verticesCount, int vboCount, int[] vboSamplesSize, Mode mode) throws InvalidStateException {
+    public void create(int verticesCount, int vboCount, int[] vboSamplesSize, Mode mode) throws IllegalArgumentException {
         this.free();
 
         //each draw mode needs a specified amount of vertices data
         this.drawMode = mode;
         if (verticesCount <= 0 || (verticesCount % mode.modulus != 0)) {
-            throw new InvalidStateException("Selected mode requires :'" + mode.modulus + "' vertices per geometric object.");
+            throw new IllegalArgumentException("Selected mode requires :'" + mode.modulus + "' vertices per geometric object.");
         }
 
 
@@ -129,7 +128,7 @@ public class VertexArrayObject extends GlObject {
 
     public void setDrawMode(Mode mode) {
         if (count <= 0 || (count % mode.modulus != 0)) {
-            throw new InvalidStateException("Selected mode requires :'" + mode.modulus + "' vertices per geometric object.");
+            throw new IllegalArgumentException("Selected mode requires :'" + mode.modulus + "' vertices per geometric object.");
         }
         this.drawMode = mode;
     }
@@ -216,13 +215,13 @@ public class VertexArrayObject extends GlObject {
      * @param first (in order) vertex to be drawn
      * @param last (in order) vertex to be drawn
      */
-    public void draw(ConstShader shader, int first, int last) throws InvalidStateException {
+    public void draw(ConstShader shader, int first, int last) throws IllegalArgumentException {
         if (this.glId == 0) return ;
 
         int count = last - first;
 
         if (count <= 0 || (count % drawMode.modulus != 0)) {
-            throw new InvalidStateException("Selected mode requires :'" + drawMode.modulus + "' vertices per geometric object.");
+            throw new IllegalArgumentException("Selected mode requires :'" + drawMode.modulus + "' vertices per geometric object.");
         }
 
         shader.bind();

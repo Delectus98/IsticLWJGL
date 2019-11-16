@@ -11,10 +11,11 @@ import java.io.IOException;
 
 public class MandelbrotSet {
     public static void main(String[] args) throws IOException {
-        GLFWWindow window = new GLFWWindow(VideoMode.getDesktopMode(), "Mandelbrot Set",  WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
+        //GLFWWindow window = new GLFWWindow(VideoMode.getDesktopMode(), "Mandelbrot Set",  WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
+        GLFWWindow window = new GLFWWindow(new VideoMode(500,500), "Mandelbrot Set",  WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
         window.setFrameRateLimit(60);
 
-        Shader mandelbrot = new Shader("mandelbrot/mandelbrot.vert", "mandelbrot/mandelbrot.frag");
+        Shader mandelbrot = new Shader("res/mandelbrot/mandelbrot.vert", "res/mandelbrot/mandelbrot.frag");
 
         int complexId = mandelbrot.getUniformLocation("c");
         int iterId = mandelbrot.getUniformLocation("iter");
@@ -28,7 +29,7 @@ public class MandelbrotSet {
         //mandelbrot.setUniform(complexId, 0.34845f, 0.4344545f);
         //mandelbrot.setUniform(complexId, -0.84845f, -0.4344545f);
         //mandelbrot.setUniform(complexId, 0.04845f, -0.7344545f);
-        mandelbrot.setUniform(complexId, -0.0084845f, 1.0044545f);
+        mandelbrot.setUniform(complexId, 0.f, 1.0044545f);
         int iter = 1000;
         mandelbrot.setUniform(iterId, iter);
         float offsetX = 0, offsetY = 0;

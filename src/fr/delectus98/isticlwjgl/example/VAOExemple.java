@@ -44,13 +44,8 @@ public final class VAOExemple
         //Sprite sprite = new Sprite(shadowBuffer.getTexture());
 
         Shader vaoShader;
-        Shader mapShader;
         Shader bumpShader;
-        Shader diffuseShader;
         Shader shadowShader;
-        Shader shadowMapShader;
-        Texture perf;
-        Texture note;
 
         Texture normal;
         Texture normalMap;
@@ -60,25 +55,16 @@ public final class VAOExemple
 
         try
         {
-            format = new OBJFormat("res/deer.obj");
-            for (String s : format.getBufferNames()) {
-                System.out.println(s + " ok");
-            }
+            format = new OBJFormat("res/vao/deer.obj");
             deer = new VertexArrayObject(format.getVerticesCount(), format.getSamplesSize().length, new int[]{3, 4}, VertexArrayObject.Mode.TRIANGLES, VertexArrayObject.Usage.STATIC);
             deer.update(0, format.getBufferData("v"));
             deer.update(1, format.getBufferData("c"));
 
-            vaoShader = new Shader("asset/vaobis.vert", "asset/vaobis.frag");
-            mapShader = new Shader("asset/map.vert", "asset/map.frag");
-            bumpShader = new Shader("asset/bump.vert", "asset/bump.frag");
-            shadowShader = new Shader("asset/shadow.vert", "asset/shadow.frag");
-            shadowMapShader = new Shader("asset/shadowMap.vert", "asset/shadowMap.frag");
-            //diffuseShader = new Shader("asset/diffuse.vert", "asset/diffuse.frag");
-            perf = new Texture("asset/perf.png");
-            note = new Texture("asset/note.bmp");
-            normal = new Texture("asset/normalNormal.png");
-            normalMap = new Texture("asset/normalMap.png");
-            //normal.setSmooth(true);
+            vaoShader = new Shader("res/vao/vaobis.vert", "res/vao/vaobis.frag");
+            bumpShader = new Shader("res/vao/bump.vert", "res/vao/bump.frag");
+            shadowShader = new Shader("res/vao/shadow.vert", "res/vao/shadow.frag");
+            normal = new Texture("res/vao/normal.png");
+            normalMap = new Texture("res/vao/normalMap.png");
             normalMap.setSmooth(true);
         }
         catch (IOException e)
@@ -173,10 +159,6 @@ public final class VAOExemple
         Vector3f a3 = new Vector3f(1, 0, 0);
         Vector3f b3 = new Vector3f(0.5f,0.5f, 1);
         System.out.println(Vector3f.radianBetween(a3, b3));
-
-        Shape shape = new Sprite(perf);//new RectangleShape(0,0,100,100);
-        shape.setFillColor(Color.White);
-        shape.move(10,10);
 
 
         Clock clk = new Clock();
