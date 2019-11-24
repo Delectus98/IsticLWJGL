@@ -1,8 +1,6 @@
 package fr.delectus98.isticlwjgl.system;
 
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
-
 /**
  * CallbackMode provides interface to allow or not some GLFWWindow Callback functions
  */
@@ -29,7 +27,6 @@ public class CallbackMode {
      * Constructor is private to provide only existing modes that are functional
      * @param modes chosen modes
      */
-    @Immutable
     private CallbackMode(long modes) {
         this.modes = modes;
     }

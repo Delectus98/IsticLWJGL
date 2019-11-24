@@ -1,6 +1,8 @@
-#version 130
+#version 430
 
-uniform sampler2D texture;
+
+layout (binding = 0) uniform sampler2D texture;
+layout (binding = 1) uniform sampler2D texture1;
 uniform vec2 c;
 uniform int iter = 1000;
 uniform float scaleX = 2;
@@ -224,15 +226,40 @@ vec2 c_julia(vec2 z) {
     return vec2(x, y);
 }
 
+
+#define MANDELBROT
+#define JULIA
+
+
+#define FACTORX 1.3333
+#define FACTORY 1.6666
+
+int triangle(int val, int max)
+{
+    val %= 2 * (max);
+
+    if (val < max)
+        return val;
+    else if (val == max)
+        return max;
+    else if (val > max)
+        return 2 * max - val;
+    return val;
+}
+
 void main(void)
 {
     vec2 z;
     vec2 cp = c;
-    /*cp.x = 1.3333 * scaleX * (gl_TexCoord[0].x - 0.5) + offsetX;
-    cp.y = scaleY * (gl_TexCoord[0].y - 0.5) + offsetY;*/
+#ifdef MANDELBROT
+    cp.x = FACTORX * scaleX * (gl_TexCoord[0].x - 0.5) + offsetX;
+    cp.y = FACTORY * scaleY * (gl_TexCoord[0].y - 0.5) + offsetY;
+    #endif
 
+#ifdef JULIA
     z.x = scaleX * (gl_TexCoord[0].x - 0.5) + offsetX;
     z.y = scaleY * (gl_TexCoord[0].y - 0.5) + offsetY;
+    #endif
 
     int i;
     for(i=0; i<iter; i++) {
@@ -245,7 +272,10 @@ void main(void)
         z.y = y;
     }
 
-    float v = (i == iter ? 0.0f : (float(i) / 75.0f))/** (1-sqrt(scaleX*scaleY)/5))*/;
+    float v0 = (i == iter ? 0.0f : (float(triangle(i, 5)+20) / 25.0f));
+    float v1 = (i == iter ? 0.0f : (float(triangle(i, 5)+10) / 15.0f));
+    float v2 = (i == iter ? 0.0f : (float(triangle(i, 5)) / 5.0f));
 
-    gl_FragColor = vec4(v,v,v,1.f);
+    //gl_FragColor = vec4(v0+0.1,v1+0.2,v2+0.3,1.f);
+    gl_FragColor = vec4(v0,v1,v2,1.f) * texture2D(texture1, vec2(float(i) / 75.f, 0.f));
 }

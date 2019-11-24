@@ -38,26 +38,18 @@ public class RenderWindow {
         FontFamily font;
         Shader overlay;
 
-        OBJFormat format;
 
         try {
-            format = new OBJFormat("res/deer.obj");
-            format.getBufferNames().forEach(System.out::println);
-            System.out.println(format.getObjectName());
-            System.out.println(format.getSampleSize("v"));
-            format.getBufferNames().forEach(n -> System.out.print(n + "["+ format.getSampleSize(n)+ "]:"));
-            System.out.println();
-
             //renderTexture = new RenderTexture(200,200);
             //renderTexture2 = new RenderTexture(200,200);
 
-            texture = new Texture("dalle.png");
+            texture = new Texture("res/mandelbrot/rainbow.png");
             texture.setWrapMode(Texture.REPEAT);
-            texture2 = new Texture("Phases.bmp");
-            texture3 = new Texture("ben10.png");
-            transp = new Texture("character.png");
+            texture2 = new Texture("res/mandelbrot/rainbow.png");
+            texture3 = new Texture("res/mandelbrot/rainbow.png");
+            transp = new Texture("res/mandelbrot/rainbow.png");
 
-            font = new FontFamily("default.ttf", 30);
+            font = new FontFamily("asset/arial.ttf", 30);
             overlay = new Shader("asset/overlay.vert", "asset/overlay.frag");
             //font = new FontFamily("asmelina.ttf", 24);
             //font = new FontFamily("arial.ttf", 24);

@@ -7,7 +7,7 @@ package fr.delectus98.isticlwjgl.graphics;
  */
 public abstract class Shape extends Transformable implements Drawable
 {
-    protected Color color = new Color(1,1,1,1);
+    protected Color color = new Color(255, 255, 255, 255);
     protected float width = 0, height = 0;
 
     //protected VertexArrayObject buffer;

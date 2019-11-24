@@ -146,7 +146,7 @@ public class Camera3D extends Camera {
     /**
      * Sets the orientation of the camera where it look to
      * @see Camera3D#lookAt(Vector3f)
-     * @param eye
+     * @param eye vector that is direction where the camera will look to
      */
     public void look(Vector3f eye) {
         _eye = eye.unit();
@@ -156,7 +156,7 @@ public class Camera3D extends Camera {
     /**
      * Sets the position where the camera look to
      * @see Camera3D#look(Vector3f)
-     * @param target
+     * @param target the position the camera will look to
      */
     public void lookAt(Vector3f target) {
         _eye = target.sum(_center.neg()).unit();
@@ -165,7 +165,7 @@ public class Camera3D extends Camera {
 
     /**
      * Sets the direction where the camera's top is
-     * @param up
+     * @param up vector that points to the top of the camera view.
      */
     public void setUpVector(Vector3f up) {
         _up = up.unit();

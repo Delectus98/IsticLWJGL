@@ -11,7 +11,7 @@ public class ConwayGame {
     public static void main(String[] args) throws IOException {
         int w = 100, h = 100;
         GLFWWindow window = new GLFWWindow(new VideoMode(w, h), "Mandelbrot Set",  WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
-        window.setFrameRateLimit(10);
+        window.setFrameRateLimit(1);
 
         Shader conway = new Shader("res/conway/conway.vert", "res/conway/conway.frag");
 

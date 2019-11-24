@@ -1,7 +1,5 @@
 package fr.delectus98.isticlwjgl.system;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
-
 /**
  * WindowStyle provides interface to allow or not some GLFWWindow styles.
  * Issue 1: No title bar and the window become not resizable.
@@ -35,7 +33,6 @@ public class WindowStyle {
      * Constructor is private to provide only existing styles that are functional
      * @param styles chosen styles
      */
-    @Immutable
     private WindowStyle(int styles){
         bits = styles;
     }

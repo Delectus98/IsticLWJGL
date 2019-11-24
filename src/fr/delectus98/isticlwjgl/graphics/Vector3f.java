@@ -147,8 +147,8 @@ public class Vector3f extends org.lwjgl.util.vector.Vector3f implements Comparab
 
     /**
      * Computes the scalar of two vectors.
-     * @param v1
-     * @param v2
+     * @param v1 first vector
+     * @param v2 second vector
      * @return scalar of v1 and v2 (v1 * v2)
      */
     public static float scalar(Vector3f v1, Vector3f v2){

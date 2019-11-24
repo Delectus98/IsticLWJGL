@@ -23,14 +23,16 @@ public class MandelbrotSet {
         int offsetYId = mandelbrot.getUniformLocation("offsetY");
         int scaleXId = mandelbrot.getUniformLocation("scaleX");
         int scaleYId = mandelbrot.getUniformLocation("scaleY");
+        int texture0 = mandelbrot.getUniformLocation("texture");
+        int texture1 = mandelbrot.getUniformLocation("texture1");
 
         mandelbrot.bind();
         //mandelbrot.setUniform(complexId, 0.34845f, 0.4344545f);
         //mandelbrot.setUniform(complexId, 0.34845f, 0.4344545f);
         //mandelbrot.setUniform(complexId, -0.84845f, -0.4344545f);
         //mandelbrot.setUniform(complexId, 0.04845f, -0.7344545f);
-        mandelbrot.setUniform(complexId, 0.f, 1.0044545f);
-        int iter = 1000;
+        mandelbrot.setUniform(complexId, 0.0f, 1.0044545f);
+        int iter = 500;
         mandelbrot.setUniform(iterId, iter);
         float offsetX = 0, offsetY = 0;
         mandelbrot.setUniform(offsetXId, offsetX);
@@ -40,10 +42,12 @@ public class MandelbrotSet {
         mandelbrot.setUniform(scaleYId, scaleY);
 
         ConstTexture t = Texture.DefaultTexture();
-        Shape shape = new Sprite(t);
+        ConstTexture rainbow = new Texture("res/mandelbrot/rainbow.jpg");
+        Sprite shape = new Sprite(t);
         shape.setScale((float)window.getDimension().x / t.getWidth(), (float)window.getDimension().y / t.getHeight());
 
         Keyboard k = new Keyboard(window);
+
 
         while (window.isOpen())
         {
@@ -103,9 +107,11 @@ public class MandelbrotSet {
             mandelbrot.setUniform(iterId, iter);
 
             window.clear();
-
-            window.draw(shape, mandelbrot);
-
+            mandelbrot.bind();
+            t.bind(0);
+            rainbow.bind(1);
+            shape.draw();
+            //window.draw(shape, mandelbrot);
             window.display();
         }
     }

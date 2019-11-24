@@ -62,7 +62,7 @@ public class VertexArrayObject extends GlObject {
      * Creates a Vertex Buffer Object with a specific Usage.
      * @param verticesCount vertices count.
      * @param vboCount Number of VAO. (positions, colors, texture coords)
-     * @param vboSamplesSize For each VAO each vertices requires how many floats per sample. (0 < vboSampleSize.length <= vboCount)
+     * @param vboSamplesSize For each VAO each vertices requires how many floats per sample. (vboSampleSize.length == vboCount)
      * @param mode draw mode.
      * @param usage usage specified usage.
      */
@@ -162,7 +162,8 @@ public class VertexArrayObject extends GlObject {
     /**
      * Updates the GPU memory for a specific VAO using a specific index (and length).
      * @param vbo specified vbo
-     * @param data New memory.
+     * @param data New data.
+     * @param offset index where the data will be placed inside the specified vba
      */
     public void update(int vbo, float[] data, int offset) {
         if (super.getGlId() == 0) return;
@@ -195,6 +196,7 @@ public class VertexArrayObject extends GlObject {
 
     /**
      * Displays VBO.
+     * @param shader vao shader
      */
     public void draw(ConstShader shader) {
         if (this.glId == 0) return ;
@@ -212,6 +214,7 @@ public class VertexArrayObject extends GlObject {
 
     /**
      * Displays an interval of vertices of the VAO.
+     * @param shader vao shader
      * @param first (in order) vertex to be drawn
      * @param last (in order) vertex to be drawn
      */

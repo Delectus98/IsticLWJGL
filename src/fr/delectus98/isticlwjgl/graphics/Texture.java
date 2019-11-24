@@ -26,11 +26,8 @@ import javax.imageio.ImageIO;
  */
 public class Texture extends GlObject implements ConstTexture {
     //TODO plus optimisé de faire comme ça ? en gros on va conserver la derniere texture (ou null) activée pour ne pas l'activer a chaque fois qu'elle va être utilisée a la suite
-    private static ThreadLocal<Texture> currentTexture = new ThreadLocal<>();
+    //private static ThreadLocal<Texture> currentTexture = new ThreadLocal<>();
     private static Map<Integer, Texture> currentTextures = new HashMap<>();
-    static {
-        currentTexture.set(null);
-    }
 
     //
     private static Texture trivial = null;
@@ -311,10 +308,11 @@ public class Texture extends GlObject implements ConstTexture {
     public void free(){
         if (glId == 0)
             return ;
-        if (currentTexture.get() == this) {
-            currentTexture.set(null);
+        if (currentTextures.containsValue(this)) {
+            Integer binding = currentTextures.entrySet().stream().reduce((e1, e2) -> (e1.getValue() == this) ? e1 : e2).get().getKey();
+            currentTextures.remove(binding);
+            Texture.unbind(binding);
         }
-        glBindTexture(GL_TEXTURE_2D, 0);
         glDeleteTextures((int)glId);
         glId = 0;
     }
