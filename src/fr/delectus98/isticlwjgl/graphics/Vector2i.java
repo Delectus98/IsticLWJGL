@@ -24,7 +24,7 @@ public class Vector2i implements Comparable<Vector2i> {
     }
 
     // self-operation
-    public Vector2i add(Vector2f vec2) {
+    public Vector2i add(fr.delectus98.isticlwjgl.math.Vector2f vec2) {
         this.x += vec2.x;
         this.y += vec2.y;
         return this;

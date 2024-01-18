@@ -14,7 +14,6 @@ public final class Example2D {
 
         Mouse mouse = new Mouse(window);
 
-
         Joystick joystick = (Joystick.isPlugged(0) ? new Joystick(0) : null);
 
         Clock clk = new Clock();
@@ -117,6 +116,7 @@ public final class Example2D {
                     System.out.println("Joystick "+event.joystick+" disconnection");
                 }
                 else if (event.type == Event.Type.BUTTONRELEASED) {
+                    shape.setPosition(0.0f, 0.0f);
                     System.out.println("Button released detected");
                 }
                 else if (event.type == Event.Type.BUTTONPRESSED) {
@@ -124,7 +124,6 @@ public final class Example2D {
                 }
                 else if (event.type == Event.Type.RESIZE) {
                     System.out.println("Window resized");
-                    //
                 }
                 else if (event.type == Event.Type.MOVE) {
                     System.out.println("Window moved");

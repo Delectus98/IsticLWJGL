@@ -2,8 +2,8 @@ package fr.delectus98.isticlwjgl.system;
 
 import fr.delectus98.isticlwjgl.graphics.Vector2f;
 import fr.delectus98.isticlwjgl.graphics.Vector3f;
+import fr.delectus98.isticlwjgl.math.Matrix4f;
 import fr.delectus98.isticlwjgl.opengl.GLM;
-import org.lwjgl.util.vector.Matrix4f;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -50,7 +50,8 @@ public class CameraOrtho extends Camera3D {
 
     @Override
     public Matrix4f getViewMatrix() {
-        return GLM.lookAt(_center, _eye.sum(_center),  _up).scale(new org.lwjgl.util.vector.Vector3f(invertAxis.x * zoom, invertAxis.y * zoom,zoom));
+        return GLM.lookAt(_center, _eye.sum(_center),  _up)
+                .scale(invertAxis.x * zoom, invertAxis.y * zoom,zoom);
     }
     @Override
     public Matrix4f getProjectionMatrix() {

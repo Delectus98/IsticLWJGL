@@ -13,6 +13,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 
+import java.nio.FloatBuffer;
+
 /**
  * Interface that handle VBO structure and CPU to GPU stream
  */
@@ -155,7 +157,7 @@ public class VertexArrayObject extends GlObject {
 
         // assign vertex VBO to slot 0 of VAO
         glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[vbo]);
-        glBufferData(GL15.GL_ARRAY_BUFFER, data, usage.usage);
+        glBufferData(GL15.GL_ARRAY_BUFFER, FloatBuffer.wrap(data), usage.usage);
         glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
@@ -173,7 +175,7 @@ public class VertexArrayObject extends GlObject {
         // assign vertex VBO to slot 0 of VAO
         glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboArrayId[vbo]);
         final int BYTE_SIZEOF_FLOAT = 4;
-        glBufferSubData(GL15.GL_ARRAY_BUFFER, offset * BYTE_SIZEOF_FLOAT, data);
+        glBufferSubData(GL15.GL_ARRAY_BUFFER, (long) offset * BYTE_SIZEOF_FLOAT, FloatBuffer.wrap(data));
         glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 

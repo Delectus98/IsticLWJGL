@@ -3,8 +3,8 @@ package fr.delectus98.isticlwjgl.system;
 
 import fr.delectus98.isticlwjgl.graphics.Vector2i;
 import fr.delectus98.isticlwjgl.graphics.Vector3f;
+import fr.delectus98.isticlwjgl.math.Matrix4f;
 import fr.delectus98.isticlwjgl.opengl.GLM;
-import org.lwjgl.util.vector.Matrix4f;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -185,10 +185,4 @@ public class Camera3D extends Camera {
         glMatrixMode(GL_MODELVIEW);
         glLoadMatrixf(getViewBuffer());
     }
-
-
-
-
-
-
 }

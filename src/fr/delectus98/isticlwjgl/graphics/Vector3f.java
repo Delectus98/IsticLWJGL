@@ -3,7 +3,7 @@ package fr.delectus98.isticlwjgl.graphics;
 /**
  * Represents a 3D point/vector/dimension.
  */
-public class Vector3f extends org.lwjgl.util.vector.Vector3f implements Comparable<Vector3f> {
+public class Vector3f extends fr.delectus98.isticlwjgl.math.Vector3f implements Comparable<Vector3f> {
     /*public float x;
     public float y;
     public float z;*/

@@ -12,7 +12,9 @@ import java.io.IOException;
 public class MandelbrotSet {
     public static void main(String[] args) throws IOException {
         //GLFWWindow window = new GLFWWindow(VideoMode.getDesktopMode(), "Mandelbrot Set",  WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
-        GLFWWindow window = new GLFWWindow(new VideoMode(500,500), "Mandelbrot Set",  WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
+        GLFWWindow window = new GLFWWindow(new VideoMode(500,500), "Mandelbrot Set", WindowStyle.DEFAULT.remove(WindowStyle.RESIZABLE));
+        // Camera2D camera = ((Camera2D)window.getCamera());
+        // camera.setCenter(new Vector2f(250.f, 250.f));
         window.setFrameRateLimit(60);
 
         Shader mandelbrot = new Shader("res/mandelbrot/mandelbrot.vert", "res/mandelbrot/mandelbrot.frag");
@@ -23,8 +25,9 @@ public class MandelbrotSet {
         int offsetYId = mandelbrot.getUniformLocation("offsetY");
         int scaleXId = mandelbrot.getUniformLocation("scaleX");
         int scaleYId = mandelbrot.getUniformLocation("scaleY");
-        int texture0 = mandelbrot.getUniformLocation("texture");
-        int texture1 = mandelbrot.getUniformLocation("texture1");
+        int texture0Id = mandelbrot.getUniformLocation("texture");
+        int texture1Id = mandelbrot.getUniformLocation("texture1");
+        int viewportSizeId = mandelbrot.getUniformLocation("viewportSize");
 
         mandelbrot.bind();
         //mandelbrot.setUniform(complexId, 0.34845f, 0.4344545f);
@@ -40,6 +43,7 @@ public class MandelbrotSet {
         float scaleX = 2, scaleY = 2;
         mandelbrot.setUniform(scaleYId, scaleX);
         mandelbrot.setUniform(scaleYId, scaleY);
+        mandelbrot.setUniform(viewportSizeId, 500.0f, 500.0f);
 
         ConstTexture t = Texture.DefaultTexture();
         ConstTexture rainbow = new Texture("res/mandelbrot/rainbow.jpg");
@@ -47,7 +51,6 @@ public class MandelbrotSet {
         shape.setScale((float)window.getDimension().x / t.getWidth(), (float)window.getDimension().y / t.getHeight());
 
         Keyboard k = new Keyboard(window);
-
 
         while (window.isOpen())
         {

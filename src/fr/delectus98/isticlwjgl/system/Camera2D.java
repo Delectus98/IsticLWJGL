@@ -2,9 +2,8 @@ package fr.delectus98.isticlwjgl.system;
 
 import fr.delectus98.isticlwjgl.graphics.Vector2f;
 import fr.delectus98.isticlwjgl.graphics.Vector2i;
+import fr.delectus98.isticlwjgl.math.Matrix4f;
 import fr.delectus98.isticlwjgl.opengl.GLM;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -74,11 +73,10 @@ public class Camera2D extends Camera {
 
     @Override
     public Matrix4f getViewMatrix() {
-        return new Matrix4f()
-                .translate(new org.lwjgl.util.vector.Vector2f(center.x, center.y))
-                .scale(new Vector3f(invertAxis.x * zoom, invertAxis.y * zoom,1))
-                .rotate(angle, new Vector3f(0,0,1))
-                .translate(new org.lwjgl.util.vector.Vector2f(-center.x, -center.y));
+        return Matrix4f.translate(center.x, center.y, 0)
+                .scale2(invertAxis.x * zoom, invertAxis.y * zoom,1)
+                .rotate2(angle, 0,0,1)
+                .translate2(-center.x, -center.y, 0);
     }
     @Override
     public Matrix4f getProjectionMatrix() {
@@ -149,6 +147,5 @@ public class Camera2D extends Camera {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glLoadMatrixf(getViewBuffer());
-
     }
 }

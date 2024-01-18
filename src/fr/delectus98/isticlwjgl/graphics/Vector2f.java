@@ -4,7 +4,7 @@ package fr.delectus98.isticlwjgl.graphics;
 /**
  * Represents a 2D point/vector/dimension.
  */
-public class Vector2f extends org.lwjgl.util.vector.Vector2f implements Comparable<Vector2f> {
+public class Vector2f extends fr.delectus98.isticlwjgl.math.Vector2f implements Comparable<Vector2f> {
     /*public float x;
     public float y;*/
 

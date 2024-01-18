@@ -1,5 +1,6 @@
 package fr.delectus98.isticlwjgl.graphics;
 
+import fr.delectus98.isticlwjgl.opengl.GLM;
 import fr.delectus98.isticlwjgl.system.GlObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -9,6 +10,9 @@ import static org.lwjgl.opengl.GL20.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 /**http://schabby.de/opengl-shader-example/*/
@@ -128,7 +132,7 @@ public class Shader extends GlObject implements ConstShader {
         }
 
         // load code from file into String
-        String code = loadFile(filename);
+        final String code = loadFile(filename);
 
         // upload code to OpenGL and associate code with shader
         glShaderSource(handle, code);
@@ -140,7 +144,7 @@ public class Shader extends GlObject implements ConstShader {
         int shaderStatus = glGetShaderi(handle, GL20.GL_COMPILE_STATUS);
 
         // check whether compilation was successful
-        if( shaderStatus == GL11.GL_FALSE)
+        if (shaderStatus == GL11.GL_FALSE)
         {
             throw new IllegalStateException("compilation error for shader ["+filename+"]. Reason: " + glGetShaderInfoLog(handle, 1000));
         }
@@ -306,7 +310,7 @@ public class Shader extends GlObject implements ConstShader {
     public void setUniformMatrix4(int id, float[] values)
     {
         this.bind();
+
         GL20.glUniformMatrix4fv(id, false, values);
     }
-
 }
