@@ -1,14 +1,4 @@
-#version 430
-
-
-layout (binding = 0) uniform sampler2D texture;
-layout (binding = 1) uniform sampler2D texture1;
-uniform vec2 c;
-uniform int iter = 1000;
-uniform float scaleX = 2;
-uniform float scaleY = 2;
-uniform float offsetX = 0;
-uniform float offsetY = 0;
+#version 450
 
 // based on https://github.com/rust-num/num-complex/blob/master/src/lib.rs
 // Copyright 2013 The Rust Project Developers. MIT license
@@ -247,35 +237,46 @@ int triangle(int val, int max)
     return val;
 }
 
-void main(void)
+layout (binding = 0) uniform sampler2D texture;
+layout (binding = 1) uniform sampler2D texture1;
+uniform vec2 c;
+uniform int iter = 1000;
+uniform float scaleX = 2.0;
+uniform float scaleY = 2.0;
+uniform float offsetX = 0.0;
+uniform float offsetY = 0.0;
+uniform vec2 viewportSize; // Add this uniform
+
+out vec4 fragColor;
+
+void main()
 {
     vec2 z;
     vec2 cp = c;
-#ifdef MANDELBROT
-    cp.x = FACTORX * scaleX * (gl_TexCoord[0].x - 0.5) + offsetX;
-    cp.y = FACTORY * scaleY * (gl_TexCoord[0].y - 0.5) + offsetY;
+    #ifdef MANDELBROT
+    cp.x = FACTORX * scaleX * (gl_FragCoord.x / viewportSize.x - 0.5) + offsetX;
+    cp.y = FACTORY * scaleY * (gl_FragCoord.y / viewportSize.y - 0.5) + offsetY;
     #endif
 
-#ifdef JULIA
-    z.x = scaleX * (gl_TexCoord[0].x - 0.5) + offsetX;
-    z.y = scaleY * (gl_TexCoord[0].y - 0.5) + offsetY;
+    #ifdef JULIA
+    z.x = scaleX * (gl_FragCoord.x / viewportSize.x - 0.5) + offsetX;
+    z.y = scaleY * (gl_FragCoord.y / viewportSize.y - 0.5) + offsetY;
     #endif
 
     int i;
-    for(i=0; i<iter; i++) {
-        vec2 complex = c_mul(z,z) + cp;
-        float x = complex.x;//(z.x * z.x - z.y * z.y) + c.x;
-        float y = complex.y;//(z.y * z.x + z.x * z.y) + c.y;
+    for(i = 0; i < iter; i++) {
+        vec2 complex = c_mul(z, z) + cp;
+        float x = complex.x; // (z.x * z.x - z.y * z.y) + c.x;
+        float y = complex.y; // (z.y * z.x + z.x * z.y) + c.y;
 
         if((x * x + y * y) > 4.0) break;
         z.x = x;
         z.y = y;
     }
 
-    float v0 = (i == iter ? 0.0f : (float(triangle(i, 5)+20) / 25.0f));
-    float v1 = (i == iter ? 0.0f : (float(triangle(i, 5)+10) / 15.0f));
-    float v2 = (i == iter ? 0.0f : (float(triangle(i, 5)) / 5.0f));
+    float v0 = (i == iter ? 0.0 : (float(triangle(i, 5) + 20) / 25.0));
+    float v1 = (i == iter ? 0.0 : (float(triangle(i, 5) + 10) / 15.0));
+    float v2 = (i == iter ? 0.0 : (float(triangle(i, 5)) / 5.0));
 
-    //gl_FragColor = vec4(v0+0.1,v1+0.2,v2+0.3,1.f);
-    gl_FragColor = vec4(v0,v1,v2,1.f) * texture2D(texture1, vec2(float(i) / 75.f, 0.f));
+    fragColor = vec4(v0, v1, v2, 1.0) * texture2D(texture1, vec2(float(i) / 75.0, 0.0));
 }

@@ -5,51 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90d55153-4dd0-43a3-b9d7-324672b057f7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lwjgl.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/alternative/lwjgl_util.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-glfw/glfw_license.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-glfw/lwjgl-glfw-javadoc.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-glfw/lwjgl-glfw-natives-linux.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-glfw/lwjgl-glfw-natives-macos.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-glfw/lwjgl-glfw-natives-windows.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-glfw/lwjgl-glfw-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-glfw/lwjgl-glfw.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-openal/lwjgl-openal-natives-linux.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-openal/lwjgl-openal-natives-macos.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-openal/lwjgl-openal-natives-windows.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-openal/lwjgl-openal.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-openal/openal_soft_license.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-opengl/khronos_license.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-opengl/lwjgl-opengl-natives-linux.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-opengl/lwjgl-opengl-natives-macos.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-opengl/lwjgl-opengl-natives-windows.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-opengl/lwjgl-opengl.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-stb/lwjgl-stb-natives-linux.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-stb/lwjgl-stb-natives-macos.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-stb/lwjgl-stb-natives-windows.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl-stb/lwjgl-stb.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl/dyncall_license.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl/lwjgl-natives-linux.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl/lwjgl-natives-macos.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl/lwjgl-natives-windows.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lwjgl3/lwjgl/lwjgl.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/mandelbrot/mandelbrot.frag" beforeDir="false" afterPath="$PROJECT_DIR$/res/mandelbrot/mandelbrot.frag" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/example/Example2D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/example/Example2D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/example/MandelbrotSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/example/MandelbrotSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Shader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Shader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Vector2f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Vector2f.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Vector2i.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Vector2i.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Vector3f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/Vector3f.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/VertexArrayObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/graphics/VertexArrayObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/opengl/GLM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/opengl/GLM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/Camera2D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/Camera2D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/Camera3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/Camera3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/CameraOrtho.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/CameraOrtho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/GLFWContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/GLFWContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/RenderTarget.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/delectus98/isticlwjgl/system/RenderTarget.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mandelbrot/mandelbrot.frag" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mandelbrot/mandelbrot.frag" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +41,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/maven+update&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Java Projects/IsticLWJGL&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
@@ -92,7 +56,7 @@
       <recent name="D:\Java Projects\IsticLWJGL\lib" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Example2D">
+  <component name="RunManager" selected="Application.MandelbrotSet">
     <configuration name="Example2D" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="fr.delectus98.isticlwjgl.example.Example2D" />
       <module name="your-artifact-id" />
@@ -119,6 +83,29 @@
     </configuration>
     <configuration name="MandelbrotSet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="fr.delectus98.isticlwjgl.example.MandelbrotSet" />
+      <module name="isticlwjgl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fr.delectus98.isticlwjgl.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestGLFWWindow" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fr.delectus98.isticlwjgl.example.TestGLFWWindow" />
       <module name="your-artifact-id" />
       <extension name="coverage">
         <pattern>
@@ -130,8 +117,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestGLFWWindow" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="fr.delectus98.isticlwjgl.example.TestGLFWWindow" />
+    <configuration name="ThreadGLFWWindow" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fr.delectus98.isticlwjgl.example.ThreadGLFWWindow" />
       <module name="your-artifact-id" />
       <extension name="coverage">
         <pattern>
@@ -157,6 +144,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.ThreadGLFWWindow" />
       <item itemvalue="Application.MandelbrotSet" />
       <item itemvalue="Application.VAOExemple" />
       <item itemvalue="Application.TestGLFWWindow" />
@@ -164,9 +152,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Example2D" />
-        <item itemvalue="Application.VAOExemple" />
         <item itemvalue="Application.MandelbrotSet" />
+        <item itemvalue="Application.Example2D" />
+        <item itemvalue="Application.ThreadGLFWWindow" />
+        <item itemvalue="Application.VAOExemple" />
         <item itemvalue="Application.TestGLFWWindow" />
       </list>
     </recent_temporary>

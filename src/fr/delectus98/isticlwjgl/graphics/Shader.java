@@ -132,7 +132,7 @@ public class Shader extends GlObject implements ConstShader {
         }
 
         // load code from file into String
-        String code = loadFile(filename);
+        final String code = loadFile(filename);
 
         // upload code to OpenGL and associate code with shader
         glShaderSource(handle, code);
@@ -144,7 +144,7 @@ public class Shader extends GlObject implements ConstShader {
         int shaderStatus = glGetShaderi(handle, GL20.GL_COMPILE_STATUS);
 
         // check whether compilation was successful
-        if( shaderStatus == GL11.GL_FALSE)
+        if (shaderStatus == GL11.GL_FALSE)
         {
             throw new IllegalStateException("compilation error for shader ["+filename+"]. Reason: " + glGetShaderInfoLog(handle, 1000));
         }

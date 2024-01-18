@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.delectus98.isticlwjgl</groupId>
-    <artifactId>your-artifact-id</artifactId>
+    <artifactId>isticlwjgl</artifactId>
     <version>1.0</version>
 
     <properties>
