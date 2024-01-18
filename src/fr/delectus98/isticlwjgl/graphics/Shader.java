@@ -1,5 +1,6 @@
 package fr.delectus98.isticlwjgl.graphics;
 
+import fr.delectus98.isticlwjgl.opengl.GLM;
 import fr.delectus98.isticlwjgl.system.GlObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -9,6 +10,9 @@ import static org.lwjgl.opengl.GL20.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 /**http://schabby.de/opengl-shader-example/*/
@@ -306,7 +310,7 @@ public class Shader extends GlObject implements ConstShader {
     public void setUniformMatrix4(int id, float[] values)
     {
         this.bind();
+
         GL20.glUniformMatrix4fv(id, false, values);
     }
-
 }

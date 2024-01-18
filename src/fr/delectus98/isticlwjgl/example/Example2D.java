@@ -14,7 +14,6 @@ public final class Example2D {
 
         Mouse mouse = new Mouse(window);
 
-
         Joystick joystick = (Joystick.isPlugged(0) ? new Joystick(0) : null);
 
         Clock clk = new Clock();

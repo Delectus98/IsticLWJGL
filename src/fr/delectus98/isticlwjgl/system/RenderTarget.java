@@ -8,10 +8,7 @@ import fr.delectus98.isticlwjgl.graphics.*;
  */
 public abstract class RenderTarget extends GlObject {
     //Multiple RenderTargets
-    private static ThreadLocal<RenderTarget> currentTarget = new ThreadLocal<RenderTarget>();
-
-    //load default shader only once
-    private static boolean first = true;
+    private static final ThreadLocal<RenderTarget> currentTarget = new ThreadLocal<>();
 
     //default view parameters
     protected Camera defaultCamera;

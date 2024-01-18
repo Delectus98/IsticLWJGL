@@ -1,9 +1,11 @@
 package fr.delectus98.isticlwjgl.opengl;
 
 import fr.delectus98.isticlwjgl.graphics.Vector2f;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import fr.delectus98.isticlwjgl.math.Matrix4f;
+import fr.delectus98.isticlwjgl.math.Vector3f;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 /**
@@ -152,15 +154,15 @@ public class GLM {
      */
     public static Matrix4f lookAt(Vector3f eye, Vector3f center, Vector3f up) {
 
-        Vector3f forward = Vector3f.sub(center, eye, null);
-        forward.normalise(forward);
+        Vector3f forward = center.sub(eye);
+        forward = forward.normalize();
 
-        Vector3f u = up.normalise(null);
+        Vector3f u = up.normalize();
 
-        Vector3f side = Vector3f.cross(forward, u, null);
-        side.normalise(side);
+        Vector3f side = forward.cross(u);
+        side = side.normalize();
 
-        Vector3f.cross(side, forward, u);
+        u = side.cross(forward);
 
         Matrix4f m = new Matrix4f();
 
@@ -176,7 +178,7 @@ public class GLM {
         m.m12 = -forward.y;
         m.m22 = -forward.z;
 
-        m.translate(new Vector3f(-eye.x, -eye.y, -eye.z));
+        m.translate(-eye.x, -eye.y, -eye.z);
 
         return m;
     }

@@ -2,9 +2,9 @@ package fr.delectus98.isticlwjgl.system;
 
 
 import fr.delectus98.isticlwjgl.graphics.ConstShader;
+import fr.delectus98.isticlwjgl.math.Matrix4f;
 import fr.delectus98.isticlwjgl.opengl.GLM;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix4f;
 
 /**
  * A camera decides how fr.delectus98.isticlwjgl.graphics will be draw by transforming their coordinates according to camera settings/properties.
@@ -52,14 +52,14 @@ public abstract class Camera {
             return;
         }
 
-        GL20.glUniformMatrix4fv(mvpUniform, false, GLM.toFloatArray((Matrix4f.mul(getProjectionMatrix(), getViewMatrix(), null))));
+        GL20.glUniformMatrix4fv(mvpUniform, false, GLM.toFloatArray(getProjectionMatrix().mul(getViewMatrix())));
     }
 
     /**
      * Sets up MVP matrix using GLSL matrix uniform location
      * @param mvpUniform uniform MVP matrix location
      * @param model model matrix to build MVP matrix
-     */
+
     public final void setUniformMVP(int mvpUniform, Matrix4f model) {
         if (mvpUniform < 0) {
             System.out.println("MVP Uniform matrix do not exist in the shader.");
@@ -67,7 +67,7 @@ public abstract class Camera {
         }
 
         GL20.glUniformMatrix4fv(mvpUniform, false, GLM.toFloatArray((Matrix4f.mul(getProjectionMatrix(), Matrix4f.mul(getViewMatrix(), model, null), null))));
-    }
+    } */
 
     /**
      * Sets up MVP matrix to shader using GLSL matrix name
